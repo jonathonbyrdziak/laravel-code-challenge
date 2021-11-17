@@ -16,5 +16,7 @@ class DatabaseSeeder extends Seeder
                 factory(App\Car::class, rand(1, 3))->create(['owner_id' => $owner->id, 'address_id' => $address->id]);
             });
         });
+        
+        $this->call(OwnerTotalSeeder::class);
     }
 }
