@@ -9,6 +9,14 @@
 import TableButtonsComponent from "./TableButtonsComponent";
 
 export default {
+    props: {
+        cars: {
+            type: Array,
+            default: function(){return []},
+            required: false
+        }
+    },
+    
     data() {
         return {
             columns: [
@@ -57,7 +65,11 @@ export default {
         }
     },
     created: function () {
-        this.showCars()
+	    if (jQuery.isEmptyObject(this.cars)) {
+        	this.showCars()
+	    } else {
+	        this.rows = this.cars;
+        }
     }
 }
 </script>

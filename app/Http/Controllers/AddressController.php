@@ -29,6 +29,21 @@ class AddressController extends Controller
     {
         return $address;
     }
+    
+    /**
+     * 
+     * @param Address $address
+     * @return JsonResponse
+     */
+    public function showWithRelationships(Address $address): JsonResponse
+    {
+        $results = array(
+            'address' => $address,
+            'cars' => $address->cars
+        );
+        
+        return response()->json($results, 200);
+    }
 
     /**
      * Store an address.

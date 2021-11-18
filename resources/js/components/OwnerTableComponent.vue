@@ -11,6 +11,7 @@ import TableButtonsComponent from "./TableButtonsComponent";
 export default {
     data() {
         return {
+        	
             columns: [
                 {
                     label: 'ID',
@@ -43,8 +44,33 @@ export default {
             loading: true
         }
     },
+    
+	mounted() {
+	    var self = this
+	    EventBus.$on('on-view-click', function(id){
+	      self.onViewClick(id)
+	    })
+	    EventBus.$on('on-edit-click', function(id){
+	      self.onEditClick(id)
+	    })
+	},
+	
+	beforeDestroy() {
+	    // removing eventBus listener
+	    EventBus.$off('on-view-click')
+	    EventBus.$off('on-edit-click')
+	},
+	
     methods: {
-        showOwners: function () {
+	    onViewClick: function (id){
+	        this.$router.push({ name: 'owner/view', params: { id: id } })
+	    },
+	    onEditClick: function (id){
+	        this.$router.push({ name: 'owner/edit', params: { id: id } })
+	    },
+        showOwners: function (){
+        
+        	// Gets all owners from backend
             axios.get('/owner').then(function (res) {
                 this.rows = res.data.map(o => ({...o, 'type': 'owner'}));
             }.bind(this));

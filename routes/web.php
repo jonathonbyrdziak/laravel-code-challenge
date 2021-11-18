@@ -22,17 +22,23 @@ Route::post('owner', 'OwnerController@store');
 Route::put('owner/{owner}', 'OwnerController@update');
 Route::delete('owner/{owner}', 'OwnerController@delete');
 
+Route::get('owner/json/{owner}', 'OwnerController@showWithRelationships');
+
 Route::get('address', 'AddressController@index');
 Route::get('address/{address}', 'AddressController@show');
 Route::post('address', 'AddressController@store');
 Route::put('address/{address}', 'AddressController@update');
 Route::delete('address/{address}', 'AddressController@delete');
 
+Route::get('address/json/{address}', 'AddressController@showWithRelationships');
+
 Route::get('car', 'CarController@index');
 Route::get('car/{car}', 'CarController@show');
 Route::post('car', 'CarController@store');
 Route::put('car/{car}', 'CarController@update');
 Route::delete('car/{car}', 'CarController@delete');
+
+Route::get('car/json/{car}', 'CarController@showWithRelationships');
 
 Route::get('{any}', function () {
     return view('layouts.app');

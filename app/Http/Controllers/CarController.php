@@ -29,6 +29,22 @@ class CarController extends Controller
     {
         return $car;
     }
+    
+    /**
+     * 
+     * @param Car $car
+     * @return JsonResponse
+     */
+    public function showWithRelationships(Car $car): JsonResponse
+    {
+        $results = array(
+            'car' => $car,
+            'address' => $car->addresses,
+            'owner' => $car->owner
+        );
+        
+        return response()->json($results, 200);
+    }
 
     /**
      * Store an car.

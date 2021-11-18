@@ -17,9 +17,23 @@ import {routes} from './routes';
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
+/**
+ * Not much documentation on this datatable, here's what I found.
+ * 
+ * https://github.com/GerkinDev/vuejs-datatable
+ * https://gerkindev.github.io/vuejs-datatable/
+ * 
+ */
 import 'vuejs-datatable/dist/themes/bootstrap-4.esm';
 import {VuejsDatatableFactory} from 'vuejs-datatable';
 Vue.use(VuejsDatatableFactory);
+
+/**
+ * Allows events to be passed back up the chain through the vuejs-datatable.
+ * This is being used for the action buttons in the datatable cells
+ *
+ */
+import EventBus from './eventBus';
 
 /**
  * The following block of code may be used to automatically register your
