@@ -9,14 +9,6 @@
 import TableButtonsComponent from "./TableButtonsComponent";
 
 export default {
-    props: {
-        addresses: {
-            type: Array,
-            default: function(){return []},
-            required: false
-        }
-    },
-    
     data() {
         return {
             columns: [
@@ -49,30 +41,7 @@ export default {
             loading: true
         }
     },
-    
-	mounted() {
-	    var self = this
-	    EventBus.$on('on-view-click', function(id){
-	      self.onViewClick(id)
-	    })
-	    EventBus.$on('on-edit-click', function(id){
-	      self.onEditClick(id)
-	    })
-	},
-	
-	beforeDestroy() {
-	    // removing eventBus listener
-	    EventBus.$off('on-view-click')
-	    EventBus.$off('on-edit-click')
-	},
-	
     methods: {
-	    onViewClick: function (id){
-	        this.$router.push({ name: 'address/view', params: { id: id } })
-	    },
-	    onEditClick: function (id){
-	        this.$router.push({ name: 'address/edit', params: { id: id } })
-	    },
         showAddresses: function () {
             axios.get('/address').then(function (res) {
                 this.rows = res.data.map(o => ({...o, 'type': 'address'}));
@@ -80,11 +49,7 @@ export default {
         }
     },
     created: function () {
-	    if (jQuery.isEmptyObject(this.addresses)) {
-	    	this.showAddresses()
-	    } else {
-	        this.rows = this.addresses;
-        }
+        this.showAddresses()
     }
 }
 </script>

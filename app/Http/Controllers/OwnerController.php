@@ -29,30 +29,6 @@ class OwnerController extends Controller
     {
         return $owner;
     }
-    
-    /**
-     * In this case, I know that ->show isn't being used in the program,
-     * so I would/should have rewritten it. But I wanted to emphasize the
-     * fact that I don't like rewritting existing functions that I'm not 100%
-     * sure about. 
-     * 
-     * Creating a new wrapper function might add more to the codebase
-     * but it reduces the number of errors "bugs" found during regression testing
-     * and makes the entire system more stable.
-     * 
-     * @param Owner $owner
-     * @return JsonResponse
-     */
-    public function showWithRelationships(Owner $owner): JsonResponse
-    {
-        $results = array(
-            'owner' => $owner,
-            'addresses' => $owner->addresses,
-            'cars' => $owner->cars
-        );
-        
-        return response()->json($results, 200);
-    }
 
     /**
      * Store an owner.
@@ -76,9 +52,7 @@ class OwnerController extends Controller
      */
     public function update(Request $request, Owner $owner): JsonResponse
     {
-        $owner->first_name = $request->first_name;
-        $owner->last_name = $request->last_name;
-        $owner->save();
+        $owner->update($request->all());
 
         return response()->json($owner, 200);
     }
