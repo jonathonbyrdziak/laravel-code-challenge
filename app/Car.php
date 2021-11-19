@@ -7,18 +7,17 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Car extends Model
 {
-    protected $fillable = ['make', 'model', 'year', 'owner_id'];
-
+    protected $fillable = ['make', 'model', 'year', 'owner_id', 'address_id'];
+    
     /**
-     * Get owners associated with a car.
      *
-     * @return HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function owners(): HasOne
+    public function owner()
     {
-        return $this->hasOne(Owner::class);
+        return $this->belongsTo('App\Owner');
     }
-
+    
     /**
      * Get addresses associated with a car.
      *

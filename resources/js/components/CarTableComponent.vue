@@ -9,6 +9,14 @@
 import TableButtonsComponent from "./TableButtonsComponent";
 
 export default {
+    props: {
+        cars: {
+            type: Array,
+            default: function(){return []},
+            required: false
+        }
+    },
+    
     data() {
         return {
             columns: [
@@ -50,6 +58,12 @@ export default {
         }
     },
     methods: {
+	    onViewClick: function (id){
+	        this.$router.push({ name: 'car/view', params: { id: id } })
+	    },
+	    onEditClick: function (id){
+	        this.$router.push({ name: 'car/edit', params: { id: id } })
+	    },
         showCars: function () {
             axios.get('/car').then(function (res) {
                 this.rows = res.data.map(o => ({...o, 'type': 'car'}));
@@ -57,7 +71,11 @@ export default {
         }
     },
     created: function () {
-        this.showCars()
+	    if (jQuery.isEmptyObject(this.cars)) {
+        	this.showCars()
+	    } else {
+	        this.rows = this.cars;
+        }
     }
 }
 </script>

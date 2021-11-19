@@ -9,6 +9,13 @@
 import TableButtonsComponent from "./TableButtonsComponent";
 
 export default {
+    props: {
+        owner: {
+            default: function(){return []},
+            required: false
+        }
+    },
+    
     data() {
         return {
             columns: [
@@ -44,6 +51,12 @@ export default {
         }
     },
     methods: {
+	    onViewClick: function (id){
+	        this.$router.push({ name: 'owner/view', params: { id: id } })
+	    },
+	    onEditClick: function (id){
+	        this.$router.push({ name: 'owner/edit', params: { id: id } })
+	    },
         showOwners: function () {
             axios.get('/owner').then(function (res) {
                 this.rows = res.data.map(o => ({...o, 'type': 'owner'}));
@@ -51,7 +64,11 @@ export default {
         }
     },
     created: function () {
-        this.showOwners()
+	    if (jQuery.isEmptyObject(this.owner)) {
+	    	this.showOwners()
+	    } else {
+	        this.rows = [this.owner];
+        }
     }
 }
 </script>

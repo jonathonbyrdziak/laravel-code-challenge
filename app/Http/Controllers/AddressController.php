@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
+    protected $showRelationships = ['cars', 'owner'];
+    
     /**
      * Return a list of all addresses.
      *
@@ -27,6 +29,11 @@ class AddressController extends Controller
      */
     public function show(Address $address): Address
     {
+        foreach ($this->showRelationships as $relationship) {
+            $address->$relationship; // pull the relationship
+        }
+        $address->showRelationships = $this->showRelationships;
+        $address->showFillable = $address->getFillable();
         return $address;
     }
 

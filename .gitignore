@@ -14,3 +14,5 @@ yarn-error.log
 .buildpath
 .project
 /.settings
+access_log
+error_log

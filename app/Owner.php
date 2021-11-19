@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Owner extends Model
 {
+    protected $fillable = ['first_name', 'last_name'];
+    
     /**
      * Get addresses associated with an owner.
      *

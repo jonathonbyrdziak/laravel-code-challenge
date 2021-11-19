@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Address extends Model
 {
+    protected $fillable = ['address','city','country','postal_code','owner_name'];
+    
     /**
-     * Get owners associated with an address.
-     *
-     * @return HasOne
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function owners(): HasOne
+    public function owner()
     {
-        return $this->hasOne(Owner::class);
+        return $this->belongsTo('App\Owner');
     }
 
     /**

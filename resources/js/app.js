@@ -17,6 +17,13 @@ import {routes} from './routes';
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
+/**
+ * Not much documentation on this datatable, here's what I found.
+ * 
+ * https://github.com/GerkinDev/vuejs-datatable
+ * https://gerkindev.github.io/vuejs-datatable/
+ * 
+ */
 import 'vuejs-datatable/dist/themes/bootstrap-4.esm';
 import {VuejsDatatableFactory} from 'vuejs-datatable';
 Vue.use(VuejsDatatableFactory);
