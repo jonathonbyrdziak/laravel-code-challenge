@@ -11,7 +11,6 @@ import TableButtonsComponent from "./TableButtonsComponent";
 export default {
     props: {
         addresses: {
-        	type: Array,
             default: false,
             required: false
         }

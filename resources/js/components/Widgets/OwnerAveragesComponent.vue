@@ -50,7 +50,7 @@ export default {
     
     methods: {
         show: function (){
-            axios.get('/owner/widget/averages/')
+            axios.get('/api/owner/widget/averages/')
 	            .then(function (res) {
 	            	jQuery.each(res.data,function(k,i){
 	            		this[k] = i;

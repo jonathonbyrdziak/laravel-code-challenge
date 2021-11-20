@@ -21,14 +21,12 @@ Route::get('owner/{owner}', 'OwnerController@show');
 Route::post('owner', 'OwnerController@store');
 Route::put('owner/{owner}', 'OwnerController@update');
 Route::delete('owner/{owner}', 'OwnerController@delete');
-Route::get('owner/widget/averages', 'OwnerController@averagesWidget');
 
 Route::get('address', 'AddressController@index');
 Route::get('address/{address}', 'AddressController@show');
 Route::post('address', 'AddressController@store');
 Route::put('address/{address}', 'AddressController@update');
 Route::delete('address/{address}', 'AddressController@delete');
-Route::get('address/widget/averages', 'AddressController@averagesWidget');
 
 Route::get('car', 'CarController@index');
 Route::get('car/{car}', 'CarController@show');

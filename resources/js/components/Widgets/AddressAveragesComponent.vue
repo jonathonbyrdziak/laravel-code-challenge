@@ -26,7 +26,7 @@ export default {
     
     methods: {
         show: function (){
-            axios.get('/address/widget/averages/')
+            axios.get('/api/address/widget/averages/')
 	            .then(function (res) {
 	            	jQuery.each(res.data,function(k,i){
 	            		this[k] = i;
