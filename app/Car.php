@@ -21,11 +21,11 @@ class Car extends Model
     /**
      * Get addresses associated with a car.
      *
-     * @return HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function addresses(): HasOne
+    public function address()
     {
-        return $this->hasOne(Address::class);
+        return $this->belongsTo('App\Address');
     }
 
     public function getTypes(): array

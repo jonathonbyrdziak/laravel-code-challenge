@@ -1927,9 +1927,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   props: {
     addresses: {
       type: Array,
-      "default": function _default() {
-        return [];
-      },
+      "default": false,
       required: false
     }
   },
@@ -1978,6 +1976,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
+    onDeleteClick: function onDeleteClick(id) {
+      this.$router.push({
+        name: 'address/delete',
+        params: {
+          id: id
+        }
+      });
+    },
     showAddresses: function showAddresses() {
       axios.get('/address').then(function (res) {
         this.rows = res.data.map(function (o) {
@@ -1989,7 +1995,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   created: function created() {
-    if (jQuery.isEmptyObject(this.addresses)) {
+    if (this.addresses === false) {
       this.showAddresses();
     } else {
       this.rows = this.addresses;
@@ -2107,10 +2113,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     cars: {
-      type: Array,
-      "default": function _default() {
-        return [];
-      },
+      "default": false,
       required: false
     }
   },
@@ -2165,6 +2168,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
+    onDeleteClick: function onDeleteClick(id) {
+      this.$router.push({
+        name: 'car/delete',
+        params: {
+          id: id
+        }
+      });
+    },
     showCars: function showCars() {
       axios.get('/car').then(function (res) {
         this.rows = res.data.map(function (o) {
@@ -2176,7 +2187,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   created: function created() {
-    if (jQuery.isEmptyObject(this.cars)) {
+    if (this.cars === false) {
       this.showCars();
     } else {
       this.rows = this.cars;
@@ -2215,6 +2226,118 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Delete.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['id'],
+  data: function data() {
+    return {
+      data: {
+        showFillable: {}
+      },
+      hide: ['showRelationships', 'showFillable'],
+      visibleFields: {}
+    };
+  },
+  computed: {
+    loading: function loading() {
+      if (jQuery.isEmptyObject(this.visibleFields)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    title: function title() {
+      return this.getView();
+    },
+    fields: function fields() {
+      return this.visibleFields;
+    }
+  },
+  filters: {
+    capitalize: function capitalize(value) {
+      if (!value) return '';
+      value = value.toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+  },
+  methods: {
+    deleteSubmit: function deleteSubmit() {
+      axios["delete"]('/' + this.getView() + '/' + this.id).then(function (res) {
+        this.$router.go(-1);
+      }.bind(this));
+    },
+    show: function show() {
+      axios.get('/' + this.getView() + '/' + this.id).then(function (res) {
+        this.data = res.data;
+        this.defineVisibleFields();
+      }.bind(this));
+    },
+    defineVisibleFields: function defineVisibleFields() {
+      this.hide = this.hide.concat(this.data.showRelationships);
+      this.visibleFields = {};
+      jQuery.each(this.data, function (field, index) {
+        if (this.hide.indexOf(field) > -1) {
+          return false;
+        } else {
+          this.visibleFields[field] = this.data[field];
+        }
+      }.bind(this));
+    },
+    getView: function getView() {
+      this.view = this.$route.name.split('/').shift();
+      return this.view;
+    }
+  },
+  created: function created() {
+    this.show();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Edit.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Edit.vue?vue&type=script&lang=js& ***!
@@ -2224,6 +2347,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -2296,6 +2420,14 @@ __webpack_require__.r(__webpack_exports__);
     update: function update(e) {
       this.data[e.property] = e.value;
     },
+    deleterecord: function deleterecord() {
+      this.$router.push({
+        name: this.getView() + '/delete',
+        params: {
+          id: this.data.id
+        }
+      });
+    },
     submit: function submit() {
       this.updating = true;
       var self = this;
@@ -2313,9 +2445,15 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     show: function show() {
+      var _this = this;
+
       axios.get('/' + this.getView() + '/' + this.id).then(function (res) {
         this.data = res.data;
-      }.bind(this));
+      }.bind(this))["catch"](function (error) {
+        if (error.response.status == 404) {
+          _this.$router.push('/' + _this.getView());
+        }
+      });
     },
     getView: function getView() {
       this.view = this.$route.name.split('/').shift();
@@ -2475,6 +2613,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['id'],
   data: function data() {
@@ -2482,7 +2621,8 @@ __webpack_require__.r(__webpack_exports__);
       view: null,
       data: {
         showRelationships: {},
-        showFillable: {}
+        showFillable: {},
+        addresses: {}
       },
       hide: ['showRelationships', 'showFillable'],
       selectedIndex: '',
@@ -2490,6 +2630,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
+    addresses: function addresses() {
+      if (typeof this.data.addresses == 'undefined' && typeof this.data.address != 'undefined') {
+        return [this.data.address];
+      } else {
+        return this.data.addresses;
+      }
+    },
     loading: function loading() {
       if (jQuery.isEmptyObject(this.visibleFields)) {
         return true;
@@ -2512,7 +2659,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     viewAddress: function viewAddress() {
       if (this.view == 'addresses') return false;
-      return this.selectedIndex == 'addresses';
+      return this.selectedIndex == 'addresses' || this.selectedIndex == 'address';
     },
     viewCar: function viewCar() {
       if (this.view == 'cars') return false;
@@ -2530,6 +2677,14 @@ __webpack_require__.r(__webpack_exports__);
     clickTab: function clickTab(el) {
       this.selectedIndex = el;
     },
+    deleterecord: function deleterecord() {
+      this.$router.push({
+        name: this.getView() + '/delete',
+        params: {
+          id: this.data.id
+        }
+      });
+    },
     edit: function edit() {
       this.$router.push({
         name: this.getView() + '/edit',
@@ -2539,10 +2694,16 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     show: function show() {
+      var _this = this;
+
       axios.get('/' + this.getView() + '/' + this.id).then(function (res) {
         this.data = res.data;
         this.defineVisibleFields();
-      }.bind(this));
+      }.bind(this))["catch"](function (error) {
+        if (error.response.status == 404) {
+          _this.$router.push('/' + _this.getView());
+        }
+      });
     },
     defineVisibleFields: function defineVisibleFields() {
       this.hide = this.hide.concat(this.data.showRelationships);
@@ -2606,9 +2767,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     owner: {
-      "default": function _default() {
-        return [];
-      },
+      "default": false,
       required: false
     }
   },
@@ -2658,6 +2817,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
+    onDeleteClick: function onDeleteClick(id) {
+      this.$router.push({
+        name: 'owner/delete',
+        params: {
+          id: id
+        }
+      });
+    },
     showOwners: function showOwners() {
       axios.get('/owner').then(function (res) {
         this.rows = res.data.map(function (o) {
@@ -2669,7 +2836,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   created: function created() {
-    if (jQuery.isEmptyObject(this.owner)) {
+    if (this.owner === false) {
       this.showOwners();
     } else {
       this.rows = [this.owner];
@@ -2738,6 +2905,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     onEditClick: function onEditClick() {
       this.$parent.$parent.$parent.onEditClick(this.row.id);
+    },
+    onDeleteClick: function onDeleteClick() {
+      this.$parent.$parent.$parent.onDeleteClick(this.row.id);
     }
   }
 });
@@ -39160,6 +39330,90 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete.vue?vue&type=template&id=38a53354&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Delete.vue?vue&type=template&id=38a53354& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v(
+              "Are You Sure You Want To Delete This Record?\n                    "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body" },
+            [
+              _vm.loading
+                ? _c("div", [
+                    _vm._v("\n\t\t\t\t\t\t   Loading...\n\t\t\t\t\t\t")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.loading
+                ? _c("h2", [
+                    _vm._v("Delete " + _vm._s(_vm._f("capitalize")(_vm.title)))
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._l(_vm.fields, function(vvalue, property, index) {
+                return !_vm.loading
+                  ? _c("view-value-component", {
+                      key: index,
+                      attrs: { vvalue: vvalue, property: property }
+                    })
+                  : _vm._e()
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-footer" }, [
+            _c(
+              "div",
+              { staticClass: "col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" },
+              [
+                _c("div", { staticClass: "text-right" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", id: "submit", name: "submit" },
+                      on: { click: _vm.deleteSubmit }
+                    },
+                    [_vm._v("Delete Permanently")]
+                  )
+                ])
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Edit.vue?vue&type=template&id=031ccff5&":
 /*!*******************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Edit.vue?vue&type=template&id=031ccff5& ***!
@@ -39239,8 +39493,26 @@ var render = function() {
                           },
                           on: { click: _vm.submit }
                         },
-                        [_vm._v("Update")]
+                        [
+                          _vm._v(
+                            "Update " + _vm._s(_vm._f("capitalize")(_vm.title))
+                          )
+                        ]
+                      ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", id: "submit", name: "submit" },
+                      on: { click: _vm.deleterecord }
+                    },
+                    [
+                      _vm._v(
+                        "Delete " + _vm._s(_vm._f("capitalize")(_vm.title))
                       )
+                    ]
+                  )
                 ])
               ]
             )
@@ -39394,7 +39666,7 @@ var render = function() {
                         expression: "viewAddress"
                       }
                     ],
-                    attrs: { addresses: _vm.data.addresses }
+                    attrs: { addresses: _vm.addresses }
                   })
                 : _vm._e(),
               _vm._v(" "),
@@ -39438,11 +39710,25 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-default",
+                      staticClass: "btn btn-secondary",
                       attrs: { type: "button", id: "submit", name: "submit" },
                       on: { click: _vm.edit }
                     },
-                    [_vm._v("Edit")]
+                    [_vm._v("Edit " + _vm._s(_vm._f("capitalize")(_vm.title)))]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", id: "submit", name: "submit" },
+                      on: { click: _vm.deleterecord }
+                    },
+                    [
+                      _vm._v(
+                        "Delete " + _vm._s(_vm._f("capitalize")(_vm.title))
+                      )
+                    ]
                   )
                 ])
               ]
@@ -55812,6 +56098,7 @@ var map = {
 	"./components/App.vue": "./resources/js/components/App.vue",
 	"./components/CarTableComponent.vue": "./resources/js/components/CarTableComponent.vue",
 	"./components/Cars.vue": "./resources/js/components/Cars.vue",
+	"./components/Delete.vue": "./resources/js/components/Delete.vue",
 	"./components/Edit.vue": "./resources/js/components/Edit.vue",
 	"./components/EditInputComponent.vue": "./resources/js/components/EditInputComponent.vue",
 	"./components/GeneralView.vue": "./resources/js/components/GeneralView.vue",
@@ -56305,6 +56592,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cars_vue_vue_type_template_id_b8156aec___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cars_vue_vue_type_template_id_b8156aec___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Delete.vue":
+/*!********************************************!*\
+  !*** ./resources/js/components/Delete.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Delete_vue_vue_type_template_id_38a53354___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Delete.vue?vue&type=template&id=38a53354& */ "./resources/js/components/Delete.vue?vue&type=template&id=38a53354&");
+/* harmony import */ var _Delete_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Delete.vue?vue&type=script&lang=js& */ "./resources/js/components/Delete.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Delete_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Delete_vue_vue_type_template_id_38a53354___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Delete_vue_vue_type_template_id_38a53354___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Delete.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Delete.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/Delete.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Delete.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Delete.vue?vue&type=template&id=38a53354&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Delete.vue?vue&type=template&id=38a53354& ***!
+  \***************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_vue_vue_type_template_id_38a53354___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Delete.vue?vue&type=template&id=38a53354& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Delete.vue?vue&type=template&id=38a53354&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_vue_vue_type_template_id_38a53354___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Delete_vue_vue_type_template_id_38a53354___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -56877,6 +57233,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Cars_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Cars.vue */ "./resources/js/components/Cars.vue");
 /* harmony import */ var _components_GeneralView_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/GeneralView.vue */ "./resources/js/components/GeneralView.vue");
 /* harmony import */ var _components_Edit_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Edit.vue */ "./resources/js/components/Edit.vue");
+/* harmony import */ var _components_Delete_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Delete.vue */ "./resources/js/components/Delete.vue");
+
 
 
 
@@ -56884,6 +57242,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var routes = [{
   name: 'owners',
+  alias: '/owner',
   path: '/owners',
   component: _components_Owners_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
@@ -56897,7 +57256,13 @@ var routes = [{
   component: _components_Edit_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
   props: true
 }, {
+  name: 'owner/delete',
+  path: '/owner/delete/:id',
+  component: _components_Delete_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+  props: true
+}, {
   name: 'addresses',
+  alias: '/address',
   path: '/addresses',
   component: _components_Addresses_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
 }, {
@@ -56911,7 +57276,13 @@ var routes = [{
   component: _components_Edit_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
   props: true
 }, {
+  name: 'address/delete',
+  path: '/address/delete/:id',
+  component: _components_Delete_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+  props: true
+}, {
   name: 'cars',
+  alias: '/car',
   path: '/cars',
   component: _components_Cars_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
@@ -56923,6 +57294,11 @@ var routes = [{
   name: 'car/edit',
   path: '/car/edit/:id',
   component: _components_Edit_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+  props: true
+}, {
+  name: 'car/delete',
+  path: '/car/delete/:id',
+  component: _components_Delete_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
   props: true
 }];
 

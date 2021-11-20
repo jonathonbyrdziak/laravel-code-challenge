@@ -31,7 +31,7 @@
 						<address-table-component 
 							v-if="!loading && getView()!=='address'"
 							v-show="viewAddress"
-							:addresses="data.addresses"></address-table-component>
+							:addresses="addresses"></address-table-component>
 						
 						<car-table-component 
 							v-if="!loading && getView()!=='car'"
@@ -47,7 +47,8 @@
 					<div class="card-footer">
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 							<div class="text-right">
-								<button type="button" id="submit" name="submit" class="btn btn-default" @click="edit">Edit</button>
+								<button type="button" id="submit" name="submit" class="btn btn-secondary" @click="edit">Edit {{ title | capitalize }}</button>
+								<button type="button" id="submit" name="submit" class="btn btn-danger" @click="deleterecord">Delete {{ title | capitalize }}</button>
 							</div>
 						</div>
 					</div>
@@ -66,7 +67,8 @@ export default {
    			view : null,
         	data : {
         		showRelationships: {},
-        		showFillable: {}
+        		showFillable: {},
+        		addresses: {}
         	},
         	hide: ['showRelationships','showFillable'],
         	selectedIndex: '',
@@ -75,6 +77,13 @@ export default {
     },
 	
     computed: {
+    	addresses(){
+    		if(typeof(this.data.addresses)=='undefined' && typeof(this.data.address)!='undefined') {
+	    		return [this.data.address]
+		    } else {
+	    		return this.data.addresses
+		    }
+    	},
 		loading(){
 			if (jQuery.isEmptyObject(this.visibleFields)){ return true; } else { return false; }
 		},
@@ -93,7 +102,7 @@ export default {
 		},
 		viewAddress() {
 			if (this.view == 'addresses') return false;
-			return (this.selectedIndex == 'addresses');
+			return (this.selectedIndex == 'addresses' || this.selectedIndex == 'address');
 		},
 		viewCar() {
 			if (this.view == 'cars') return false;
@@ -111,14 +120,23 @@ export default {
     	clickTab: function(el){
 	    	this.selectedIndex = el;
     	},
+    	deleterecord: function(){
+    		this.$router.push({ name: this.getView() + '/delete', params: { id: this.data.id } })
+    	},
     	edit: function(){
     		this.$router.push({ name: this.getView() + '/edit', params: { id: this.data.id } })
     	},
         show: function (){
-            axios.get('/'+ this.getView() + '/' + this.id).then(function (res) {
-            	this.data = res.data
-            	this.defineVisibleFields()
-            }.bind(this));
+            axios.get('/'+ this.getView() + '/' + this.id)
+	            .then(function (res) {
+	            	this.data = res.data
+	            	this.defineVisibleFields()
+	            }.bind(this))
+			    .catch(error => {
+			        if (error.response.status == 404) {
+			            this.$router.push('/'+this.getView())
+			        }
+			    });
         },
         defineVisibleFields: function(){
         	this.hide = this.hide.concat(this.data.showRelationships)

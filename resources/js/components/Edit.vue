@@ -26,7 +26,8 @@
 								  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 								  Updating...
 								</button>
-								<button v-else type="button" id="submit" name="submit" class="btn btn-primary" @click="submit">Update</button>
+								<button v-else type="button" id="submit" name="submit" class="btn btn-primary" @click="submit">Update {{ title | capitalize }}</button>
+								<button type="button" id="submit" name="submit" class="btn btn-danger" @click="deleterecord">Delete {{ title | capitalize }}</button>
 							</div>
 						</div>
 					</div>
@@ -71,6 +72,9 @@ export default {
     	update: function(e){
     		this.data[e.property] = e.value;
     	},
+    	deleterecord: function(){
+    		this.$router.push({ name: this.getView() + '/delete', params: { id: this.data.id } })
+    	},
     	submit: function(){
     		this.updating = true;
     		var self = this;
@@ -83,9 +87,15 @@ export default {
                 }.bind(this));
     	},
         show: function (){
-            axios.get('/'+ this.getView() + '/' + this.id).then(function (res) {
-            	this.data = res.data;
-            }.bind(this));
+            axios.get('/'+ this.getView() + '/' + this.id)
+	            .then(function (res) {
+	            	this.data = res.data;
+	            }.bind(this))
+			    .catch(error => {
+			        if (error.response.status == 404) {
+			            this.$router.push('/'+this.getView())
+			        }
+			    });
         },
         getView: function(){
         	this.view = this.$route.name.split('/').shift();

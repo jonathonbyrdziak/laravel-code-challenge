@@ -11,14 +11,14 @@ import TableButtonsComponent from "./TableButtonsComponent";
 export default {
     props: {
         owner: {
-            default: function(){return []},
+            default: false,
             required: false
         }
     },
     
     data() {
         return {
-            columns: [
+        	columns: [
                 {
                     label: 'ID',
                     field: 'id',
@@ -36,7 +36,7 @@ export default {
                     headerAlign: 'left',
                     align: 'left'
                 },
-                {
+            	{
                     label: 'Actions',
                     headerAlign: 'right',
                     align: 'right',
@@ -57,6 +57,9 @@ export default {
 	    onEditClick: function (id){
 	        this.$router.push({ name: 'owner/edit', params: { id: id } })
 	    },
+	    onDeleteClick: function (id){
+	        this.$router.push({ name: 'owner/delete', params: { id: id } })
+	    },
         showOwners: function () {
             axios.get('/owner').then(function (res) {
                 this.rows = res.data.map(o => ({...o, 'type': 'owner'}));
@@ -64,7 +67,7 @@ export default {
         }
     },
     created: function () {
-	    if (jQuery.isEmptyObject(this.owner)) {
+	    if (this.owner === false) {
 	    	this.showOwners()
 	    } else {
 	        this.rows = [this.owner];

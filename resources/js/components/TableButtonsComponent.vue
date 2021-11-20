@@ -20,6 +20,9 @@ export default {
 	    },
 	    onEditClick() {
 	    	this.$parent.$parent.$parent.onEditClick( this.row.id );
+	    },
+	    onDeleteClick() {
+	    	this.$parent.$parent.$parent.onDeleteClick( this.row.id );
 	    }
 	}
 }

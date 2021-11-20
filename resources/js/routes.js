@@ -3,10 +3,12 @@ import Addresses from './components/Addresses.vue';
 import Cars from './components/Cars.vue';
 import GeneralView from './components/GeneralView.vue';
 import Edit from './components/Edit.vue';
+import Delete from './components/Delete.vue';
 
 export const routes = [
     {
         name: 'owners',
+		alias: '/owner',
         path: '/owners',
         component: Owners
     },
@@ -23,7 +25,14 @@ export const routes = [
 		props: true
     },
     {
+        name: 'owner/delete',
+        path: '/owner/delete/:id',
+        component: Delete,
+		props: true
+    },
+    {
         name: 'addresses',
+		alias: '/address',
         path: '/addresses',
         component: Addresses
     },
@@ -40,7 +49,14 @@ export const routes = [
 		props: true
     },
     {
+        name: 'address/delete',
+        path: '/address/delete/:id',
+        component: Delete,
+		props: true
+    },
+    {
         name: 'cars',
+		alias: '/car',
         path: '/cars',
         component: Cars
     },
@@ -54,6 +70,12 @@ export const routes = [
         name: 'car/edit',
         path: '/car/edit/:id',
         component: Edit,
+		props: true
+    },
+    {
+        name: 'car/delete',
+        path: '/car/delete/:id',
+        component: Delete,
 		props: true
     }
 ];
