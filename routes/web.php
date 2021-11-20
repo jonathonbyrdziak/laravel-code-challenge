@@ -21,6 +21,7 @@ Route::get('owner/{owner}', 'OwnerController@show');
 Route::post('owner', 'OwnerController@store');
 Route::put('owner/{owner}', 'OwnerController@update');
 Route::delete('owner/{owner}', 'OwnerController@delete');
+Route::get('owner/widget/averages', 'OwnerController@averagesWidget');
 
 Route::get('address', 'AddressController@index');
 Route::get('address/{address}', 'AddressController@show');

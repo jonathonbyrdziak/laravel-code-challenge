@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use App\Owner;
 use Exception;
@@ -19,6 +20,30 @@ class OwnerController extends Controller
     public function index(): array
     {
         return Owner::all()->toArray();
+    }
+    
+    /**
+     * Returns the average number of cars and addresses for the owners
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function averagesWidget()
+    {
+        $ttlOwners = DB::table('owners')->selectRaw('count(*)')->first()->count;
+        $ttlAddresses = DB::table('addresses')->selectRaw('count(*)')->first()->count;
+        $ttlCars = DB::table('cars')->selectRaw('count(*)')->first()->count;
+        
+        $avgAddresses = round($ttlAddresses/$ttlOwners,0);
+        $avgCars = round($ttlCars/$ttlOwners,0);
+        
+        $response = array();
+        $response['owners'] = $ttlOwners;
+        $response['avgaddresses'] = $avgAddresses;
+        $response['ttladdresses'] = $ttlAddresses;
+        $response['avgcars'] = $avgCars;
+        $response['ttlcars'] = $ttlCars;
+        
+        return response()->json($response, 200);
     }
 
     /**
