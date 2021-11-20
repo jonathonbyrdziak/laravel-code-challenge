@@ -1,3 +1,11 @@
+## DEMO
+
+Access the demo site on Heroku here [https://tranquil-taiga-84689.herokuapp.com/](https://tranquil-taiga-84689.herokuapp.com/)
+
+- DB Migrations are in place
+- Table upgrades (issue #1 and #2) handle new installation as well as upgrading an existing installation
+- Averaging widgets are done through the api interface and display varying methods of DB facade querying
+
 ## Setup
 
 - Clone repository. (Do not fork.)
