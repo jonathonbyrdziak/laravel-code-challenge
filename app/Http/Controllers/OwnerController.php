@@ -29,6 +29,17 @@ class OwnerController extends Controller
      */
     public function averagesWidget()
     {
+        // check to see if the tables are up to date
+        $emptyCount = DB::table('owners')->selectRaw('count(*)')
+            ->whereNull('total_addresses')
+            ->orWhereNull('total_cars')
+            ->first()->count;
+        
+        if ($emptyCount) {
+            DB::statement('UPDATE owners set total_addresses = (SELECT count(*) FROM addresses WHERE owners.id = addresses.owner_id)');
+            DB::statement('UPDATE owners set total_cars = (SELECT count(*) FROM cars WHERE owners.id = cars.owner_id)');
+        }
+        
         $ttlOwners = DB::table('owners')->selectRaw('count(*)')->first()->count;
         $ttlAddresses = DB::table('addresses')->selectRaw('count(*)')->first()->count;
         $ttlCars = DB::table('cars')->selectRaw('count(*)')->first()->count;
