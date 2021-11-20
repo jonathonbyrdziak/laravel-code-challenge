@@ -29,16 +29,25 @@ class OwnerController extends Controller
      */
     public function averagesWidget()
     {
-        // check to see if the tables are up to date
-        $emptyCount = DB::table('owners')->selectRaw('count(*)')
-            ->whereNull('total_addresses')
-            ->orWhereNull('total_cars')
-            ->first()->count;
+        // If I were going to use the columns that you had me add earlier, I would do a check like this,
+        // or most likley creating a cron job to keep the db up to date.
+        // 
+        // first, check to see if the tables are up to date
+        //$emptyCount = DB::table('owners')->selectRaw('count(*)')
+        //    ->whereNull('total_addresses')
+        //    ->orWhereNull('total_cars')
+        //    ->first()->count;
+        //if ($emptyCount) {
+        //    DB::statement('UPDATE owners set total_addresses = (SELECT count(*) FROM addresses WHERE owners.id = addresses.owner_id)');
+        //    DB::statement('UPDATE owners set total_cars = (SELECT count(*) FROM cars WHERE owners.id = cars.owner_id)');
+        //}
+        //
+        //$avgs = DB::table('owners')->selectRaw('avg(total_addresses) as avgaddresses, avg(total_cars) as avgcars')->first();
+        //
+        //$response = array();
+        //$response['avgaddresses'] = $avgs['avgaddresses'];
+        //$response['avgcars'] = $avgs['avgcars'];
         
-        if ($emptyCount) {
-            DB::statement('UPDATE owners set total_addresses = (SELECT count(*) FROM addresses WHERE owners.id = addresses.owner_id)');
-            DB::statement('UPDATE owners set total_cars = (SELECT count(*) FROM cars WHERE owners.id = cars.owner_id)');
-        }
         
         $ttlOwners = DB::table('owners')->selectRaw('count(*)')->first()->count;
         $ttlAddresses = DB::table('addresses')->selectRaw('count(*)')->first()->count;

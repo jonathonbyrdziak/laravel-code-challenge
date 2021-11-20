@@ -28,6 +28,7 @@ Route::get('address/{address}', 'AddressController@show');
 Route::post('address', 'AddressController@store');
 Route::put('address/{address}', 'AddressController@update');
 Route::delete('address/{address}', 'AddressController@delete');
+Route::get('address/widget/averages', 'AddressController@averagesWidget');
 
 Route::get('car', 'CarController@index');
 Route::get('car/{car}', 'CarController@show');
